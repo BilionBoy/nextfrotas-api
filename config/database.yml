@@ -1,0 +1,41 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("DB_POOL", 5) %>
+  port: <%= ENV.fetch("DB_PORT", 5432) %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("DB_POOL", 5) %>
+  port: 5432
+  host: 172.16.107.241
+  username: "gestao_producao"
+  password: 13127474
+  database: GESTAO_DESENV
+
+test:
+  <<: *default
+  database: sgis_test
+
+production:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME", 'gestao_producao') %>
+
+gestao_desenv:
+  adapter: postgresql
+  database: GESTAO_DESENV
+  port: 5432
+  host: 172.16.107.241
+  username: "gestao_producao"
+  password: 13127474
+# matricula_production:
+#   adapter: postgresql
+#   database: MATRICULA_PRODUCAO
+#   port: 5432
+#   host: <%= ENV['DB_HOST'] %>
+#   username: <%= ENV['DB_USER'] %>
+#   password: <%= ENV['DB_PASSWORD'] %>
