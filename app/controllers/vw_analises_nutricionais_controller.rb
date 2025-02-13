@@ -1,18 +1,10 @@
 class VwAnalisesNutricionaisController < ApplicationController
   include JsonResponse
+  include PagyPagination
 
   def index
     query = VwAnaliseNutricional.ransack(params[:q])
-    pagy, paged = pagy(query.result.order(:id), limit: params[:per_page] || 1000)
-    
-    render json: {
-      pagy: {
-        current_page: pagy.page,
-        total_pages:  pagy.pages,
-        total_count:  pagy.count,
-        per_page:     pagy.limit,
-      },
-      items: paged,
-    }
+    response = paginate(query.result.order(:id), params[:per_page])  # Usando o método paginate
+    render_success(data: response, message: "Valores listados com sucesso")
   end
 end
