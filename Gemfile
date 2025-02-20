@@ -42,8 +42,8 @@ group :development, :test do
   # Gem para Postgres
   gem "pg"
 
-   # Gem para paginaçao
-   gem "pagy"
+  # Gem para paginaçao
+  gem "pagy"
 
   # Gem para filtro de pesquisas
   gem "ransack"
@@ -51,5 +51,6 @@ group :development, :test do
   # Gem para permitir a conexão navegador do cliente
   gem "rack-cors"
 
+  # Gem para debuggar
   gem "byebug"
 end
