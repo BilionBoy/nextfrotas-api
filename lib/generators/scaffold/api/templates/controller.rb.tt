@@ -1,5 +1,5 @@
 module V1
-  class <%= controller_class_name %>Controller < ApplicationController
+  class <%= @controller_class_name %>Controller < ApplicationController
     include JsonResponse
     include PagyPagination
 
