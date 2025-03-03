@@ -53,4 +53,8 @@ group :development, :test do
 
   # Gem para debuggar
   gem "byebug"
+
+  gem "bcrypt", "~> 3.1.7"  # Para armazenar senhas hashadas
+
+  gem "jwt", "~> 2.5"       # Para gerar tokens JWT
 end
