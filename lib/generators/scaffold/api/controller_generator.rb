@@ -15,7 +15,7 @@ module Scaffold
       private
 
       def controller_file_path
-        File.join("app/controllers/v1", "#{file_name.pluralize}_controller.rb")
+        File.join("app/controllers/api/v1", "#{file_name.pluralize}_controller.rb")
       end
     end
   end

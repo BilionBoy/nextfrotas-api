@@ -1,4 +1,4 @@
-module V1
+module Api::V1
   class VwAnalisesNutricionaisController < ApplicationController
     include JsonResponse
     include PagyPagination
@@ -6,7 +6,6 @@ module V1
     def index
       query = VwAnaliseNutricional.ransack(params[:q])
       response = paginate(query.result.order(:id), params[:per_page])
-
       render_success(data: response, message: "Valores listados com sucesso")
     end
   end

@@ -1,4 +1,4 @@
-module V1
+module Api::V1
   class VwEscolasMatriculasController < ApplicationController
     include JsonResponse
     include PagyPagination
@@ -6,7 +6,6 @@ module V1
     def index
       query = VwEscolaMatricula.ransack(params[:q])
       response = paginate(query.result, params[:per_page])
-
       render_success(data: response, message: "Vw escolas matriculas listados com sucesso")
     end
   end
