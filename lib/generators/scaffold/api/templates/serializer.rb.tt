@@ -1,0 +1,4 @@
+# lib/generators/scaffold/api/templates/serializer.rb.tt
+class <%= class_name %>Serializer < ActiveModel::Serializer
+  attributes :<%= attributes_names.join(', :') %>
+end

@@ -11,6 +11,7 @@ module Scaffold
       def generate_components
         generate_controller
         generate_model
+        generate_serializer
       end
 
       private
@@ -23,6 +24,11 @@ module Scaffold
       # Método para gerar a modle
       def generate_model
         invoke "scaffold:api:model", "app/models/#{file_name}.rb"
+      end
+
+      # Método para gerar o serializer
+      def generate_serializer
+        invoke "scaffold:api:serializer", "app/serializers/#{file_name}_serializer.rb"
       end
     end
   end
