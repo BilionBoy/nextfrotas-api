@@ -1,12 +1,16 @@
 module Api::V1
-    class VwSalasAulasController < ApplicationController
-      include JsonResponse
-      include PagyPagination
+  class VwSalasAulasController < ApplicationController
+    include JsonResponse
+    include PagyPagination
 
-      def index
-        query = VwSalaAula.ransack(params[:q])
-        response = paginate(query.result.order(:id), params[:per_page])
-        render_success(data: response, message: "Vw sala aulas listados com sucesso")
-      end
+    def index
+      query = VwSalaAula.ransack(params[:q])
+      pagy, records = pagy(query.result.order(:id), items: params[:per_page])
+
+      # Serializando apenas os campos desejados
+      serialized_data = records.as_json(only: [ :escola, :cre, :capacidade, :tipo_sala, :id ])
+
+      render_success(data: serialized_data, message: "Vw sala aulas listados com sucesso")
     end
+  end
 end
