@@ -57,4 +57,6 @@ group :development, :test do
   gem "bcrypt", "~> 3.1.7"  # Para armazenar senhas hashadas
 
   gem "jwt", "~> 2.5"       # Para gerar tokens JWT
+
+  gem "active_model_serializers" # Gem para serializar
 end
