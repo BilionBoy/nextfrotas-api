@@ -3,7 +3,7 @@ require "rails/all"
 
 Bundler.require(*Rails.groups)
 
-module ApiMetricas
+module NextFrotasApi
   class Application < Rails::Application
     # Rails version.
     config.load_defaults 7.2
