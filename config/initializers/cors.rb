@@ -1,10 +1,10 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "*" # Ou substitua '*' pela URL do seu frontend (ex: 'https://meufrontend.com')
+    origins "*"  # para dev pode deixar *, em prod use o domínio exato do frontend
 
-    resource "*", # Permite qualquer recurso
-      headers: :any, # Permite qualquer cabeçalho
-      methods: [ :get, :options ], # Permite apenas GET e OPTIONS
-      credentials: false # Não é necessário enviar cookies ou credenciais
+    resource "*",
+      headers: :any,
+      methods: [ :get, :post, :put, :patch, :delete, :options, :head ],
+      credentials: false
   end
 end

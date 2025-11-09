@@ -1,14 +1,7 @@
-# Be sure to restart your server when you modify this file.
-
-# Add new inflection rules using the following format. Inflections
-# are locale specific, and you may define rules for as many different
-# locales as you wish. All of these examples are active by default:
+# frozen_string_literal: true
 
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.irregular "c_posto", "c_postos"
+  inflect.irregular "c_posto",                "c_postos"
+  inflect.irregular "c_combustivel",          "c_combustiveis"
+  inflect.irregular "c_tipo_combustivel",     "c_tipos_combustiveis"
 end
-
-# These inflection rules are supported but not enabled by default:
-# ActiveSupport::Inflector.inflections(:en) do |inflect|
-#   inflect.acronym "RESTful"
-# end
