@@ -15,12 +15,12 @@ class CRequisicaoCombustivelSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at
 
-  belongs_to :posto, serializer: PostoSerializer, key: :c_posto
-  belongs_to :veiculo, serializer: VeiculoSerializer, key: :g_veiculo
-  belongs_to :condutor, serializer: CondutorSerializer, key: :g_condutor
-  belongs_to :centro_custo, serializer: CentroCustoSerializer, key: :g_centro_custo
-  belongs_to :tipo_combustivel, serializer: TipoCombustivelSerializer, key: :c_tipo_combustivel
-  belongs_to :status, serializer: StatusSerializer, key: :o_status
+  belongs_to :posto, serializer: CPostoSerializer, key: :c_posto
+  belongs_to :veiculo, serializer: GVeiculoSerializer, key: :g_veiculo
+  belongs_to :condutor, serializer: GCondutorSerializer, key: :g_condutor
+  belongs_to :centro_custo, serializer: GCentroCustoSerializer, key: :g_centro_custo
+  belongs_to :tipo_combustivel, serializer: CTipoCombustivelSerializer, key: :c_tipo_combustivel
+  belongs_to :status, serializer: OStatusSerializer, key: :o_status
 
   attribute :valor_total_formatado do
     "R$ #{'%.2f' % object.valor_total}".tr(".", ",") if object.valor_total

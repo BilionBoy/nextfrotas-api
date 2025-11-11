@@ -7,7 +7,7 @@ module Api::V1
 
     def index
        query = CRequisicaoCombustivel.ransack(params[:q])
-       pagy_data = paginate(query.result.includes(:c_posto, :g_veiculo, :g_condutor, :g_centro_custo, :c_tipo_combustivel, :o_status).order(created_at: :desc), params[:per_page])
+       pagy_data = paginate(query.result.includes(:posto, :veiculo, :condutor, :centro_custo, :tipo_combustivel, :status).order(created_at: :desc), params[:per_page])
 
        render_success(
        message: "Requisições listadas com sucesso",
