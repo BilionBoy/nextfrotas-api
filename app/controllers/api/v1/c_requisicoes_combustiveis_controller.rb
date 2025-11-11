@@ -6,10 +6,21 @@ module Api::V1
     before_action :set_requisicao, only: %i[show update destroy]
 
     def index
-      query = CRequisicaoCombustivel.ransack(params[:q])
-      response = paginate(query.result.order(created_at: :desc), params[:per_page])
-      render_success(data: response, message: "Requisições listadas com sucesso")
+       query = CRequisicaoCombustivel.ransack(params[:q])
+       pagy_data = paginate(query.result.includes(:c_posto, :g_veiculo, :g_condutor, :g_centro_custo, :c_tipo_combustivel, :o_status).order(created_at: :desc), params[:per_page])
+
+       render_success(
+       message: "Requisições listadas com sucesso",
+       data: {
+        pagy: pagy_data[:pagy],
+        items: ActiveModelSerializers::SerializableResource.new(
+          pagy_data[:items],
+          each_serializer: CRequisicaoCombustivelSerializer
+        )
+      }
+      )
     end
+
 
     def show
       render_success(data: @requisicao, message: "Requisição encontrada com sucesso")
