@@ -1,19 +1,8 @@
 # frozen_string_literal: true
 
 class CRequisicaoCombustivelSerializer < ActiveModel::Serializer
-  attributes :id,
-             :data_emissao,
-             :km_ultimo,
-             :km_atual,
-             :motivo,
-             :destino,
-             :itinerario,
-             :preco_unitario,
-             :quantidade_litros,
-             :valor_total,
-             :completar_tanque,
-             :created_at,
-             :updated_at
+  attributes :id, :data_emissao, :km_ultimo, :km_atual, :motivo, :destino, :itinerario, :preco_unitario, :quantidade_litros,
+   :valor_total, :completar_tanque, :created_at, :updated_at, :voucher_codigo, :voucher_status, :voucher_validade, :voucher_validado_em
 
   belongs_to :posto, serializer: CPostoSerializer, key: :c_posto
   belongs_to :veiculo, serializer: GVeiculoSerializer, key: :g_veiculo
