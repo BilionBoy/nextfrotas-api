@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
       resources :c_requisicoes_combustiveis,                        path: "requisicoes"
       resources :c_combustiveis,                                    path: "combustiveis"
+      resources :g_veiculos,                      only: [ :index ], path: "veiculos"
       resources :c_postos,                        only: [ :index ], path: "postos"
       resources :c_tipos_combustiveis,            only: [ :index ], path: "tipos_combustivel"
     end
