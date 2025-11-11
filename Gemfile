@@ -63,3 +63,5 @@ group :development, :test do
 
   gem "active_model_serializers" # Gem para serializar
 end
+
+gem "annotate", "~> 3.2"
