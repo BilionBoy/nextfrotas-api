@@ -5,7 +5,6 @@ module Api
     class CRequisicoesCombustiveisController < ApplicationController
       include JsonResponse
       include PagyPagination
-
       before_action :set_requisicao, only: %i[show update destroy]
 
       # ==========================================================

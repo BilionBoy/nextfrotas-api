@@ -10,9 +10,9 @@ Rails.application.routes.draw do
 
       # Outros endpoints
       resources :c_combustiveis,             path: "combustiveis"
-      resources :g_veiculos,                 only: [:index], path: "veiculos"
-      resources :c_postos,                   only: [:index], path: "postos"
-      resources :c_tipos_combustiveis,       only: [:index], path: "tipos_combustivel"
+      resources :g_veiculos,                 path: "veiculos"
+      resources :c_postos,                   only: [ :index ], path: "postos"
+      resources :c_tipos_combustiveis,       only: [ :index ], path: "tipos_combustivel"
     end
   end
 end
