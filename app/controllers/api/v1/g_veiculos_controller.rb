@@ -75,10 +75,14 @@ module Api
 
       private
 
-      def set_veiculo
-        @veiculo = GVeiculo.find_by(id: params[:id])
-        render_error(message: "Veículo não encontrado", status: :not_found) unless @veiculo
-      end
+     def set_veiculo
+       @veiculo = GVeiculo.find_by(id: params[:id])
+       unless @veiculo
+         render_error(message: "Veículo não encontrado", status: :not_found)
+         nil
+       end
+     end
+
       def veiculo_params
         params.require(:g_veiculo).permit(:placa, :chassi, :renavam, :modelo, :ano, :marca, :cor, :km_atual, :a_status_id, :g_tipo_veiculo_id, :a_unidade_id, :g_centro_custo_id)
       end
