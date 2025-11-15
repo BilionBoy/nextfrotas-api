@@ -1,16 +1,28 @@
 class User < ApplicationRecord
-  # Sobrescreve o método 'password_digest' para usar 'encrypted_password'
+  self.table_name = "users"
+
+  belongs_to :a_tipo_usuario
+  belongs_to :a_unidade, optional: true
+  belongs_to :a_status, optional: true
+  belongs_to :f_empresa_fornecedora, optional: true
+
+  # A API NÃO usa encrypted_password, mas sim password_digest
   def password_digest
     self.encrypted_password
   end
 
-  # Sobrescreve o método 'password_digest=' para gravar no campo 'encrypted_password'
-  def password_digest=(value)
-    self.encrypted_password = value
+  has_secure_password validations: false
+
+  # Helpers iguais ao MVC (sem devise, mas funcionando)
+  def admin?
+    a_tipo_usuario&.descricao&.downcase == "admin"
   end
 
-  # Usa 'has_secure_password' para validação de senha
-  has_secure_password
+  def gestor?
+    a_tipo_usuario&.descricao&.downcase == "gestor"
+  end
 
-  validates :email, presence: true, uniqueness: true
+  def fornecedor?
+    a_tipo_usuario&.descricao&.downcase == "fornecedor"
+  end
 end

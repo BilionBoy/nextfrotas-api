@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
       post "auth/login",   to: "auth#login"
       post "auth/refresh", to: "auth#refresh"
+      get "auth/me",       to: "auth#me"
 
       # Requisição combustível
       post "vouchers/validate", to: "vouchers#validate"

@@ -5,6 +5,7 @@ module Api
     class CRequisicoesCombustiveisController < ApplicationController
       include JsonResponse
       include PagyPagination
+      before_action :require_gestor!
       before_action :set_requisicao, only: %i[show update destroy]
 
       # ==========================================================
@@ -31,9 +32,7 @@ module Api
         )
       end
 
-      # ==========================================================
       # GET /api/v1/requisicoes/:id
-      # ==========================================================
       def show
         render_success(
           data: CRequisicaoCombustivelSerializer.new(@requisicao),
@@ -41,9 +40,7 @@ module Api
         )
       end
 
-      # ==========================================================
       # POST /api/v1/requisicoes
-      # ==========================================================
       def create
         requisicao = CRequisicaoCombustivel.new(requisicao_params)
         requisicao.data_emissao ||= Time.current
@@ -65,9 +62,7 @@ module Api
         end
       end
 
-      # ==========================================================
       # PATCH/PUT /api/v1/requisicoes/:id
-      # ==========================================================
       def update
         if @requisicao.update(requisicao_params)
           render_success(
@@ -82,9 +77,7 @@ module Api
         end
       end
 
-      # ==========================================================
       # DELETE /api/v1/requisicoes/:id
-      # ==========================================================
       def destroy
         if @requisicao.destroy
           render_success(message: "Requisição excluída com sucesso")
@@ -101,22 +94,8 @@ module Api
       end
 
       def requisicao_params
-        params.require(:c_requisicao_combustivel).permit(
-          :g_veiculo_id,
-          :c_posto_id,
-          :c_tipo_combustivel_id,
-          :g_condutor_id,
-          :g_centro_custo_id,
-          :km_ultimo,
-          :km_atual,
-          :motivo,
-          :destino,
-          :itinerario,
-          :preco_unitario,
-          :quantidade_litros,
-          :valor_total,
-          :completar_tanque
-        )
+       permitted_attributes = CRequisicaoCombustivel .column_names .reject { |col| [ "deleted_at", "created_by", "updated_by" ].include?(col) }
+       params.require(:c_requisicao_combustivel).permit(permitted_attributes.map(&:to_sym))
       end
     end
   end

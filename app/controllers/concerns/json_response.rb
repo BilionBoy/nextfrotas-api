@@ -3,17 +3,17 @@ module JsonResponse
 
   def render_success(data: nil, message:, status: :ok)
     render json: {
-      status: "success",
+      status:  "success",
       message: message,
-      data: data
+      data:    data
     }, status: status
   end
 
   def render_error(message:, errors: nil, status: :unprocessable_entity)
     render json: {
-      status: "error",
+      status:  "error",
       message: message,
-      errors: errors
+      errors:  errors
     }, status: status
   end
 end

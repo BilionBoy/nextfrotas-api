@@ -38,8 +38,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-
-
+end
   gem "dotenv-rails", groups: [ :development, :test ]
 
   # Gem para Postgres
@@ -57,11 +56,13 @@ group :development, :test do
   # Gem para debuggar
   gem "byebug"
 
-  gem "bcrypt", "~> 3.1.7"  # Para armazenar senhas hashadas
-
-  gem "jwt", "~> 2.5"       # Para gerar tokens JWT
-
   gem "active_model_serializers" # Gem para serializar
-end
 
-gem "annotate", "~> 3.2"
+  # Para gerar tokens JWT
+  gem "jwt"
+
+  # Para armazenar senhas hashadas
+  gem "bcrypt", "~> 3.1.7"
+
+  # Mapear Models
+  gem "annotate", "~> 3.2"

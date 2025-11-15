@@ -296,7 +296,7 @@ DEPENDENCIES
   byebug
   debug
   dotenv-rails
-  jwt (~> 2.5)
+  jwt
   pagy
   pg
   puma (>= 5.0)
