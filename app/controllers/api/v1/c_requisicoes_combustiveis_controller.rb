@@ -5,8 +5,23 @@ module Api
     class CRequisicoesCombustiveisController < ApplicationController
       include JsonResponse
       include PagyPagination
-      before_action :require_gestor!
-      before_action :set_requisicao, only: %i[show update destroy]
+
+     before_action :require_gestor!, except: %i[find_by_code validar_voucher]
+     before_action :set_requisicao,  only:   %i[show update destroy validar_voucher]
+
+      # ==========================================================
+      # GET /api/v1/requisicoes/find_by_code?codigo=XXXX
+      # ==========================================================
+      def find_by_code
+        req = CRequisicaoCombustivel.find_by(voucher_codigo: params[:codigo])
+
+        return render_error(message: "Voucher não encontrado") unless req
+
+        render_success(
+          message: "Voucher encontrado",
+          data: CRequisicaoCombustivelSerializer.new(req)
+        )
+      end
 
       # ==========================================================
       # GET /api/v1/requisicoes
@@ -32,37 +47,17 @@ module Api
         )
       end
 
+      # ==========================================================
       # GET /api/v1/requisicoes/:id
+      # ==========================================================
       def show
         render_success(
-          data: CRequisicaoCombustivelSerializer.new(@requisicao),
-          message: "Requisição encontrada com sucesso"
+          message: "Requisição encontrada com sucesso",
+          data: CRequisicaoCombustivelSerializer.new(@requisicao)
         )
       end
 
-      # POST /api/v1/requisicoes
-      def create
-        requisicao = CRequisicaoCombustivel.new(requisicao_params)
-        requisicao.data_emissao ||= Time.current
-        requisicao.voucher_status ||= "pendente" # callbacks cuidam do código e validade
 
-        if requisicao.save
-          render_success(
-            message: "Requisição criada com sucesso",
-            data: CRequisicaoCombustivelSerializer.new(
-              requisicao.reload,
-              include: %i[posto veiculo tipo_combustivel status]
-            )
-          )
-        else
-          render_error(
-            message: "Erro ao criar requisição",
-            errors: requisicao.errors.full_messages
-          )
-        end
-      end
-
-      # PATCH/PUT /api/v1/requisicoes/:id
       def update
         if @requisicao.update(requisicao_params)
           render_success(
@@ -76,8 +71,64 @@ module Api
           )
         end
       end
+      # ==========================================================
+      # POST /api/v1/requisicoes
+      # ==========================================================
+      def create
+        requisicao = CRequisicaoCombustivel.new(requisicao_params)
+        requisicao.data_emissao ||= Time.current
+        requisicao.voucher_status ||= "pendente"
 
+        if requisicao.save
+          render_success(
+            message: "Requisição criada com sucesso",
+            data: CRequisicaoCombustivelSerializer.new(requisicao.reload)
+          )
+        else
+          render_error(
+            message: "Erro ao criar requisição",
+            errors: requisicao.errors.full_messages
+          )
+        end
+      end
+
+      # ==========================================================
+      # PATCH /api/v1/requisicoes/:id/validar_voucher
+      # ==========================================================
+      def validar_voucher
+        quantidade = params[:quantidade_litros].to_f
+        total = params[:valor_total].to_f
+
+        if quantidade <= 0 || total <= 0
+          return render_error(message: "Quantidade e valor total devem ser maiores que zero.")
+        end
+
+        preco_unitario = total / quantidade
+
+        if @requisicao.update(
+          quantidade_litros: quantidade,
+          valor_total: total,
+          preco_unitario: preco_unitario,
+          voucher_status: "validado",
+          voucher_validado_em: Time.current,
+          voucher_validado_por_id: current_user.id
+        )
+
+          render_success(
+            message: "Voucher validado com sucesso",
+            data: CRequisicaoCombustivelSerializer.new(@requisicao)
+          )
+        else
+          render_error(
+            message: "Erro ao validar voucher",
+            errors: @requisicao.errors.full_messages
+          )
+        end
+      end
+
+      # ==========================================================
       # DELETE /api/v1/requisicoes/:id
+      # ==========================================================
       def destroy
         if @requisicao.destroy
           render_success(message: "Requisição excluída com sucesso")
@@ -90,12 +141,16 @@ module Api
 
       def set_requisicao
         @requisicao = CRequisicaoCombustivel.find_by(id: params[:id])
-        render_error(message: "Requisição não encontrada", status: :not_found) unless @requisicao
+        render_error(message: "Requisição não encontrada") unless @requisicao
       end
 
       def requisicao_params
-       permitted_attributes = CRequisicaoCombustivel .column_names .reject { |col| [ "deleted_at", "created_by", "updated_by" ].include?(col) }
-       params.require(:c_requisicao_combustivel).permit(permitted_attributes.map(&:to_sym))
+        permitted_attributes =
+          CRequisicaoCombustivel.column_names.reject do |c|
+            [ "deleted_at", "created_by", "updated_by" ].include?(c)
+          end
+
+        params.require(:c_requisicao_combustivel).permit(permitted_attributes.map(&:to_sym))
       end
     end
   end
